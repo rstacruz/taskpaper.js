@@ -79,8 +79,8 @@ var TASK = P.seq(
  */
 
 var NOTE = P.seq(
-    P.index,
-    P.regex(/^[^\n]+\n*/)
+  P.index,
+  P.regex(/^[^-\n]([^\n]*[^:\n])?\n*/)
 ).map(function (ref) {
   var index = ref[0];
   var value = ref[1];
