@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const read = require('read-input')
+const parse = require('../index')
+
+const cli = require('meow')(`
+  Usage:
+    $ taskpaper
+
+  Options:
+    -h, --help       show usage information
+    -v, --version    print version info and exit
+`, {
+  boolean: ['help', 'version'],
+  alias: {
+    h: 'help', v: 'version'
+  }
+})
+
+read(cli.input)
+  .then(res => {
+    res.files.forEach(file => {
+      const output = parse(file.data)
+      console.log(require('util').inspect(output, { depth: null, colors: true }))
+    })
+  })
