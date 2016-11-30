@@ -75,6 +75,7 @@ It returns a `Node`, which is an object. A Node has these attributes:
 | `value`    | *String*   | The text in the project, task, or note              |     | ✓   | ✓   | ✓   |
 | `children` | *Node[]*   | An array of nodes                                   | ✓   |     | ✓   | ✓   |
 | `tags`     | *String[]* | List of tags                                        |     |     | ✓   | ✓   |
+| `depth`    | *Number*   | Depth in the tree                                   | ✓   | ✓   | ✓   | ✓   |
 | `index`    | *Object*   | Where the node is in the format of `{line, column}` |     | ✓   | ✓   | ✓   |
 
 ## Thanks

@@ -71,14 +71,14 @@ const NOTE = P.seq(
  * A block
  */
 
-function block (level = 0, prefix = '') {
-  return parentBlock(level, prefix).or(leafBlock(level, prefix))
+function block (depth = 1, prefix = '') {
+  return parentBlock(depth, prefix).or(leafBlock(depth, prefix))
 }
 
-function leafBlock (level = 0, prefix = '') {
+function leafBlock (depth = 1, prefix = '') {
   return P.seq(
       P.string(prefix),
-      level === 0 ? P.string('') : INDENT,
+      depth === 1 ? P.string('') : INDENT,
       NOTE)
     // Consolidate into one note node
     .map(([_pre, _ind, value]) => value)
@@ -86,19 +86,21 @@ function leafBlock (level = 0, prefix = '') {
     .map(notes => ({
       type: 'note',
       value: notes.map(n => n.value).join('').trim() + '\n',
+      depth,
       index: notes[0].index
     }))
 }
 
-function parentBlock (level = 0, prefix = '') {
+function parentBlock (depth = 1, prefix = '') {
   return P.seq(
     P.string(prefix),
-    level === 0 ? P.string('') : INDENT,
+    depth === 1 ? P.string('') : INDENT,
     PROJECT.or(TASK)
   ).chain(([prefix, indent, item]) => {
-    return block(level + 1, prefix + indent).many()
+    return block(depth + 1, prefix + indent).many()
     .map(children => {
       let out = item
+      out.depth = depth
       out.children = children
       return out
     })
@@ -114,12 +116,11 @@ const parser = block().many()
 function parse (str) {
   const out = parser.parse(str)
   if (out.status) {
-    return { type: 'document', children: out.value }
+    return { type: 'document', depth: 0, children: out.value }
   } else {
     let err = new Error(`Parse error in line ${out.index.line}, expected ${out.expected.join(' or ')}`)
     err.index = out.index
     err.expected = out.expected
-    console.log(str)
     err.source = str
     throw err
   }
