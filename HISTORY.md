@@ -1,3 +1,10 @@
+## [v1.0.2]
+> Nov 30, 2016
+
+- Fix tasks not being parsed properly.
+
+[v1.0.2]: https://github.com/rstacruz/taskpaper.js/compare/v1.0.1...v1.0.2
+
 ## [v1.0.1]
 > Nov 30, 2016
 

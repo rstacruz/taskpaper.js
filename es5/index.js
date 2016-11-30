@@ -20,7 +20,7 @@ var TAG = P.regex(/^@([^\s\n]+)/, 1)
  * A string without @tags
  */
 
-var NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:\s+[^@\n][^\s\n]*)*/m)
+var NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/m)
 
 /*
  * Project definition
@@ -36,7 +36,7 @@ var PROJECT = P.seq(
 
     var subp = P.seq(
       NON_TAG_STRING,
-      P.optWhitespace,
+      P.regexp(/^ */),
       P.sepBy(TAG, P.whitespace)
     )
     .map(function (ref) {
@@ -60,7 +60,7 @@ var TASK = P.seq(
   P.index,
   P.string('- '),
   NON_TAG_STRING,
-  P.optWhitespace,
+  P.regexp(/^ */),
   P.sepBy(TAG, P.whitespace)
 ).skip(NEWLINE)
 .map(function (ref) {
@@ -157,9 +157,11 @@ function parse (str) {
   if (out.status) {
     return { type: 'document', children: out.value }
   } else {
-    var err = new Error(("Parse error in line " + (out.index.line)))
+    var err = new Error(("Parse error in line " + (out.index.line) + ", expected " + (out.expected.join(' or '))))
     err.index = out.index
     err.expected = out.expected
+    console.log(str)
+    err.source = str
     throw err
   }
 }
