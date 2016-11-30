@@ -1,3 +1,10 @@
+## [v1.2.0]
+> Dec  1, 2016
+
+- Projects are now in the format `Name: @tag` just as TaskPaper does.
+
+[v1.2.0]: https://github.com/rstacruz/taskpaper.js/compare/v1.1.1...v1.2.0
+
 ## [v1.1.1]
 > Nov 30, 2016
 

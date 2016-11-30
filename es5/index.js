@@ -34,24 +34,15 @@ var TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(function (ref) {
 
 var PROJECT = P.seq(
     P.index,
-    P.regex(/([^\n]+?):/, 1))
+    P.regex(/([^\n]+?):/, 1),
+    TAGS)
   .skip(NEWLINE)
   .map(function (ref) {
     var index = ref[0];
     var value = ref[1];
+    var tags = ref[2];
 
-    var subp = P.seq(
-      NON_TAG_STRING,
-      TAGS
-    )
-    .map(function (ref) {
-      var value = ref[0];
-      var tags = ref[1];
-
-      return ({ type: 'project', value: value, tags: tags, index: index });
-    })
-
-    return subp.parse(value).value
+    return { type: 'project', value: value, tags: tags, index: index }
   })
   .desc('Project definition')
 
