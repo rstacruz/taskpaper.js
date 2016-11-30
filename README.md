@@ -50,14 +50,17 @@ Use me via `require('taskpaper/es5')`.
 const parse = require('taskpaper/es5')
 const output = parse('Hello:\n  - world')
 console.log(output)
+```
 
-// { type: 'document',
-//   children: [
-//    { type: 'project',
-//      value: 'Hello',
-//      children: [
-//        { type: 'task',
-//          value: 'world' } ] } ] }
+```js
+// Output:
+{ type: 'document',
+  children: [
+   { type: 'project',
+     value: 'Hello',
+     children: [
+       { type: 'task',
+         value: 'world' } ] } ] }
 ```
 
 For the modern ES2016+ version (require Node 6+), just use `require('taskpaper')`.
