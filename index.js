@@ -29,16 +29,11 @@ const TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(([_, tag]) => tag).many()
 
 const PROJECT = P.seq(
     P.index,
-    P.regex(/([^\n]+?):/, 1))
+    P.regex(/([^\n]+?):/, 1),
+    TAGS)
   .skip(NEWLINE)
-  .map(([index, value]) => {
-    const subp = P.seq(
-      NON_TAG_STRING,
-      TAGS
-    )
-    .map(([value, tags]) => ({ type: 'project', value, tags, index }))
-
-    return subp.parse(value).value
+  .map(([index, value, tags]) => {
+    return { type: 'project', value, tags, index }
   })
   .desc('Project definition')
 

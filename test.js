@@ -16,13 +16,13 @@ test('project', t => {
 })
 
 test('project tags', t => {
-  result = parse('Project name @tag:')
+  result = parse('Project name: @tag')
   t.deepEqual(result.children[0].tags, ['tag'])
   t.end()
 })
 
 test('project tags, multiple', t => {
-  result = parse('Project name @one @two:')
+  result = parse('Project name: @one @two')
   t.deepEqual(result.children[0].tags, ['one', 'two'])
   t.end()
 })
@@ -84,7 +84,7 @@ test('task tree', t => {
 })
 
 test('fully-loaded', t => {
-  result = parse('Project:\n  yo @true:\n  - ma @done @50%\n    thats right\n\n    :)')
+  result = parse('Project:\n  yo: @true\n  - ma @done @50%\n    thats right\n\n    :)')
 
   expected = { type: 'document',
     depth: 0,
