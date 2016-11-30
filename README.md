@@ -38,8 +38,8 @@ Version 1:
 Install me via npm or [yarn](http://yarnpkg.com/).
 
 ```sh
-npm install rstacruz/taskpaper
-yarn add --exact rstacruz/taskpaper
+npm install taskpaper
+yarn add --exact taskpaper
 ```
 
 ## Usage
