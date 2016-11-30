@@ -1,3 +1,10 @@
+## [v1.1.1]
+> Nov 30, 2016
+
+- Fix some edge cases.
+
+[v1.1.1]: https://github.com/rstacruz/taskpaper.js/compare/v1.1.0...v1.1.1
+
 ## [v1.1.0]
 > Nov 30, 2016
 

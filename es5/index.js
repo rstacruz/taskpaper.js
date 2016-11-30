@@ -14,21 +14,27 @@ var INDENT = P.regex(/[\t\s]+/)
  *     "@done"
  */
 
-var TAG = P.regex(/^@([^\s\n]+)/, 1)
+var TAG = P.regex(/@([^\s\n]+)/, 1)
 
 /*
  * A string without @tags
  */
 
-var NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/m)
+var NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/)
 
+var TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(function (ref) {
+  var _ = ref[0];
+  var tag = ref[1];
+
+  return tag;
+}).many()
 /*
  * Project definition
  */
 
 var PROJECT = P.seq(
     P.index,
-    P.regex(/^([^\n]+?):/m, 1))
+    P.regex(/([^\n]+?):/, 1))
   .skip(NEWLINE)
   .map(function (ref) {
     var index = ref[0];
@@ -36,13 +42,11 @@ var PROJECT = P.seq(
 
     var subp = P.seq(
       NON_TAG_STRING,
-      P.regexp(/^ */),
-      P.sepBy(TAG, P.whitespace)
+      TAGS
     )
     .map(function (ref) {
       var value = ref[0];
-      var _ = ref[1];
-      var tags = ref[2];
+      var tags = ref[1];
 
       return ({ type: 'project', value: value, tags: tags, index: index });
     })
@@ -60,15 +64,13 @@ var TASK = P.seq(
   P.index,
   P.string('- '),
   NON_TAG_STRING,
-  P.regexp(/^ */),
-  P.sepBy(TAG, P.whitespace)
+  TAGS
 ).skip(NEWLINE)
 .map(function (ref) {
   var index = ref[0];
   var _ = ref[1];
   var value = ref[2];
-  var __ = ref[3];
-  var tags = ref[4];
+  var tags = ref[3];
 
   return ({ type: 'task', value: value, tags: tags, index: index });
 })
@@ -80,7 +82,7 @@ var TASK = P.seq(
 
 var NOTE = P.seq(
   P.index,
-  P.regex(/^[^-\n]([^\n]*[^:\n])?\n*/)
+  P.regex(/[^-\n]([^\n]*[^:\n])?\n*/)
 ).map(function (ref) {
   var index = ref[0];
   var value = ref[1];
