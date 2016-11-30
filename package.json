@@ -2,17 +2,31 @@
   "name": "taskpaper",
   "description": "Taskpaper parser in JavaScript",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "buble": "0.14.2",
-    "tape": "4.6.3"
+  "author": "Rico Sta. Cruz <rico@ricostacruz.com>",
+  "bugs": {
+    "url": "https://github.com/rstacruz/taskpaper.js/issues"
   },
   "dependencies": {
     "parsimmon": "1.0.0"
   },
+  "devDependencies": {
+    "buble": "0.14.2",
+    "tape": "4.6.3"
+  },
+  "homepage": "https://github.com/rstacruz/taskpaper.js#readme",
+  "keywords": [
+    "notes",
+    "task",
+    "taskpaper"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rstacruz/taskpaper.js.git"
+  },
   "scripts": {
-    "test": "tape test.js",
-    "prepublish": "make"
+    "prepublish": "make",
+    "test": "tape test.js"
   }
 }
