@@ -5,12 +5,14 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "buble": "0.14.2",
     "tape": "4.6.3"
   },
   "dependencies": {
     "parsimmon": "1.0.0"
   },
   "scripts": {
-    "test": "tape test.js"
+    "test": "tape test.js",
+    "prepublish": "make"
   }
 }
