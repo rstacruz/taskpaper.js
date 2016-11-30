@@ -69,13 +69,13 @@ For the modern ES2016+ version (require Node 6+), just use `require('taskpaper')
 
 It returns a `Node`, which is an object. A Node has these attributes:
 
-| Attribute  | Type       | Description                                         | In   |
-| ----       | ----       | ----                                                | ---- |
-| `type`     | *String*   | Either *document*, *note*, *task*, or *project*     | DNPT |
-| `value`    | *String*   | The text in the project, task, or note              | NPT  |
-| `children` | *Node[]*   | An array of nodes                                   | DPT  |
-| `tags`     | *String[]* | List of tags                                        | PT   |
-| `index`    | *Object*   | Where the node is in the format of `{line, column}` | NPT  |
+| Attribute  | Type       | Description                                         | D   | N   | P   | T   |
+| ----       | ----       | ----                                                | --- | --- | --- | --- |
+| `type`     | *String*   | Either *document*, *note*, *task*, or *project*     | ✓   | ✓   | ✓   | ✓   |
+| `value`    | *String*   | The text in the project, task, or note              |     | ✓   | ✓   | ✓   |
+| `children` | *Node[]*   | An array of nodes                                   | ✓   |     | ✓   | ✓   |
+| `tags`     | *String[]* | List of tags                                        |     |     | ✓   | ✓   |
+| `index`    | *Object*   | Where the node is in the format of `{line, column}` |     | ✓   | ✓   | ✓   |
 
 ## Thanks
 
