@@ -116,7 +116,10 @@ function parse (str) {
   if (out.status) {
     return { type: 'document', children: out.value }
   } else {
-    return { error: 'Parse error', index: out.index, expected: out.expected }
+    let err = new Error(`Parse error in line ${out.index.line}`)
+    err.index = out.index
+    err.expected = out.expected
+    throw err
   }
 }
 
