@@ -14,29 +14,29 @@ const INDENT = P.regex(/[\t\s]+/)
  *     "@done"
  */
 
-const TAG = P.regex(/^@([^\s\n]+)/, 1)
+const TAG = P.regex(/@([^\s\n]+)/, 1)
 
 /*
  * A string without @tags
  */
 
-const NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/m)
+const NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/)
 
+const TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(([_, tag]) => tag).many()
 /*
  * Project definition
  */
 
 const PROJECT = P.seq(
     P.index,
-    P.regex(/^([^\n]+?):/m, 1))
+    P.regex(/([^\n]+?):/, 1))
   .skip(NEWLINE)
   .map(([index, value]) => {
     const subp = P.seq(
       NON_TAG_STRING,
-      P.regexp(/^ */),
-      P.sepBy(TAG, P.whitespace)
+      TAGS
     )
-    .map(([value, _, tags]) => ({ type: 'project', value, tags, index }))
+    .map(([value, tags]) => ({ type: 'project', value, tags, index }))
 
     return subp.parse(value).value
   })
@@ -51,10 +51,9 @@ const TASK = P.seq(
   P.index,
   P.string('- '),
   NON_TAG_STRING,
-  P.regexp(/^ */),
-  P.sepBy(TAG, P.whitespace)
+  TAGS
 ).skip(NEWLINE)
-.map(([index, _, value, __, tags]) => ({ type: 'task', value, tags, index }))
+.map(([index, _, value, tags]) => ({ type: 'task', value, tags, index }))
 .desc('Task definition')
 
 /*
@@ -63,7 +62,7 @@ const TASK = P.seq(
 
 const NOTE = P.seq(
   P.index,
-  P.regex(/^[^-\n]([^\n]*[^:\n])?\n*/)
+  P.regex(/[^-\n]([^\n]*[^:\n])?\n*/)
 ).map(([index, value]) => ({ type: 'note', value, index }))
 .desc('Note definition')
 

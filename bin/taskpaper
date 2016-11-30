@@ -21,6 +21,10 @@ read(cli.input)
   .then(res => {
     res.files.forEach(file => {
       const output = parse(file.data)
-      console.log(require('util').inspect(output, { depth: null, colors: true }))
+      if (process.stdout.isTTY) {
+        console.log(require('util').inspect(output, { depth: null, colors: true }))
+      } else {
+        console.log(JSON.stringify(output, null, 2))
+      }
     })
   })

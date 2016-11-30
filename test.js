@@ -1,5 +1,6 @@
 const test = require('tape')
 const parse = require('./index')
+const redent = require('redent')
 
 let result, expected
 
@@ -115,3 +116,17 @@ test('fully-loaded', t => {
   t.end()
 })
 
+test('weird case', t => {
+  const input = redent(`
+    A:
+      B B:
+        - Signup @xxx @xx
+
+      xxxxxx xxxxxxx:
+  `).trim()
+
+  result = parse(input)
+  t.deepEqual(result.children[0].children[0].children[0].value, 'Signup')
+
+  t.end()
+})

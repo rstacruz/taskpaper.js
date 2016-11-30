@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "buble": "0.14.2",
+    "redent": "2.0.0",
     "tape": "4.6.3"
   },
   "homepage": "https://github.com/rstacruz/taskpaper.js#readme",
