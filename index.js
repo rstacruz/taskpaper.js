@@ -62,8 +62,8 @@ const TASK = P.seq(
  */
 
 const NOTE = P.seq(
-    P.index,
-    P.regex(/^[^\n]+\n*/)
+  P.index,
+  P.regex(/^[^-\n]([^\n]*[^:\n])?\n*/)
 ).map(([index, value]) => ({ type: 'note', value, index }))
 .desc('Note definition')
 

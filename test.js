@@ -89,3 +89,10 @@ test('notes, indent', t => {
   t.deepEqual(result.children[0].value, 'Hello world\n\n    sup\n')
   t.end()
 })
+
+test('notes and task', t => {
+  result = parse('Project:\n  hello\n  - task')
+  t.deepEqual(result.children[0].children[0].type, 'note')
+  t.deepEqual(result.children[0].children[1].type, 'task')
+  t.end()
+})
