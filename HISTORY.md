@@ -1,3 +1,10 @@
+## [v1.1.0]
+> Nov 30, 2016
+
+- Add `depth`.
+
+[v1.1.0]: https://github.com/rstacruz/taskpaper.js/compare/v1.0.2...v1.1.0
+
 ## [v1.0.2]
 > Nov 30, 2016
 

@@ -1,7 +1,7 @@
 {
   "name": "taskpaper",
   "description": "Taskpaper parser in JavaScript",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "Rico Sta. Cruz <rico@ricostacruz.com>",
   "bugs": {
     "url": "https://github.com/rstacruz/taskpaper.js/issues"
