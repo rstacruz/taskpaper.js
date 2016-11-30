@@ -20,7 +20,7 @@ const TAG = P.regex(/^@([^\s\n]+)/, 1)
  * A string without @tags
  */
 
-const NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:\s+[^@\n][^\s\n]*)*/m)
+const NON_TAG_STRING = P.regex(/^(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/m)
 
 /*
  * Project definition
@@ -33,7 +33,7 @@ const PROJECT = P.seq(
   .map(([index, value]) => {
     const subp = P.seq(
       NON_TAG_STRING,
-      P.optWhitespace,
+      P.regexp(/^ */),
       P.sepBy(TAG, P.whitespace)
     )
     .map(([value, _, tags]) => ({ type: 'project', value, tags, index }))
@@ -51,7 +51,7 @@ const TASK = P.seq(
   P.index,
   P.string('- '),
   NON_TAG_STRING,
-  P.optWhitespace,
+  P.regexp(/^ */),
   P.sepBy(TAG, P.whitespace)
 ).skip(NEWLINE)
 .map(([index, _, value, __, tags]) => ({ type: 'task', value, tags, index }))
@@ -116,9 +116,11 @@ function parse (str) {
   if (out.status) {
     return { type: 'document', children: out.value }
   } else {
-    let err = new Error(`Parse error in line ${out.index.line}`)
+    let err = new Error(`Parse error in line ${out.index.line}, expected ${out.expected.join(' or ')}`)
     err.index = out.index
     err.expected = out.expected
+    console.log(str)
+    err.source = str
     throw err
   }
 }
