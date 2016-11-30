@@ -1,0 +1,16 @@
+{
+  "name": "taskpaper",
+  "description": "Taskpaper parser in JavaScript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "4.6.3"
+  },
+  "dependencies": {
+    "parsimmon": "1.0.0"
+  },
+  "scripts": {
+    "test": "tape test.js"
+  }
+}
