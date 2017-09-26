@@ -13,7 +13,7 @@ Version 1:
     Tabs are used to indent.
     Each task begins with a "- ".
     Projects end with a ":".
-    Tags are in the format "@tag_name".
+    Tags are in the format "@tag_name" or "@tag(value)".
     All other lines (such as these) are considered as notes,
     and are to be ignored.
 
@@ -24,7 +24,7 @@ Version 1:
 
     - Manage users
         - Create users @in_progress
-        - Delete users
+        - Delete users @priority(1)
         - User profile page @40%
 
     - Blog
