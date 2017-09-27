@@ -14,7 +14,7 @@ var INDENT = P.regex(/[\t\s]+/)
  *     "@done"
  */
 
-var TAG = P.regex(/@([^\(\s]+(\([^\)]+\))?)/, 1)
+var TAG = P.regex(/@([^\(\s]+(\([^\)]*\))?)/, 1)
 
 /*
  * A string without @tags

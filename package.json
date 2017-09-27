@@ -22,7 +22,7 @@
     "taskpaper"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "es5/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rstacruz/taskpaper.js.git"
@@ -33,5 +33,8 @@
   },
   "optionalDependencies": {
     "meow": "3.7.0"
-  }
+  },
+  "files": [
+    "es5"
+  ]
 }
