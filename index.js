@@ -14,7 +14,7 @@ const INDENT = P.regex(/[\t\s]+/)
  *     "@done"
  */
 
-const TAG = P.regex(/@([^\s\n]+)/, 1)
+const TAG = P.regex(/@([^\(\s]+(\([^\)]*\))?)/, 1)
 
 /*
  * A string without @tags

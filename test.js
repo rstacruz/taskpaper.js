@@ -39,6 +39,12 @@ test('task tags, multiple', t => {
   t.end()
 })
 
+test('task tags with spaces inside parentheses', t => {
+  result = parse('- Task name @one(a and b) @two @three()')
+  t.deepEqual(result.children[0].tags, ['one(a and b)', 'two', 'three()'])
+  t.end()
+})
+
 test('notes', t => {
   result = parse('Hello world')
   t.deepEqual(result.children[0].value, 'Hello world\n')
