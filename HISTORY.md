@@ -1,3 +1,12 @@
+## [v1.3.0]
+> Sep 27, 2017
+
+- [#2] - Allow spaces in tags. ([@davidnunez])
+
+[#2]: https://github.com/rstacruz/taskpaper.js/issues/2
+[@davidnunez]: https://github.com/davidnunez
+[v1.3.0]: https://github.com/rstacruz/taskpaper.js/compare/v1.2.0...v1.3.0
+
 ## [v1.2.0]
 > Dec  1, 2016
 
