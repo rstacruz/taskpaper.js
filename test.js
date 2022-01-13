@@ -77,7 +77,7 @@ test('notes, multiple newlines', t => {
 
 test('notes, multiline using CRLF character', t => {
   result = parse('Hello world\r\n:)')
-  t.deepEqual(result.children[0].value, 'Hello world\r\n:)\n')
+  t.deepEqual(result.children[0].value, 'Hello world\n:)\n')
   t.end()
 })
 
