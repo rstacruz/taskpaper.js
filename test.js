@@ -39,6 +39,12 @@ test('task tags', t => {
   t.end()
 })
 
+test('task tags, >1 space separating task value from tags', t => {
+  result = parse('- Task name  @tag')
+  t.deepEqual(result.children[0].tags, ['tag'])
+  t.end()
+})
+
 test('task tags, multiple', t => {
   result = parse('- Task name @one @two')
   t.deepEqual(result.children[0].tags, ['one', 'two'])
