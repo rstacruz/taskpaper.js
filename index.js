@@ -20,7 +20,7 @@ const TAG = P.regex(/@([^\(\s]+(\([^\)]*\))?)/, 1)
  * A string without @tags
  */
 
-const NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/)
+const NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n ][^\s\n]*)*/)
 
 const TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(([_, tag]) => tag).many()
 /*
