@@ -11,7 +11,13 @@ test('project', t => {
   t.deepEqual(result.children[0].value, 'Project name')
   t.deepEqual(result.children[0].tags, [])
   t.deepEqual(result.children[0].index, { offset: 0, line: 1, column: 1 })
+  t.end()
+})
 
+test('project with leading newline', t => {
+  result = parse('\nProject name:')
+  t.deepEqual(result.type, 'document')
+  t.deepEqual(result.children[0].type, 'project')
   t.end()
 })
 
@@ -33,6 +39,12 @@ test('task tags', t => {
   t.end()
 })
 
+test('task tags, >1 space separating task value from tags', t => {
+  result = parse('- Task name  @tag')
+  t.deepEqual(result.children[0].tags, ['tag'])
+  t.end()
+})
+
 test('task tags, multiple', t => {
   result = parse('- Task name @one @two')
   t.deepEqual(result.children[0].tags, ['one', 'two'])
@@ -42,6 +54,12 @@ test('task tags, multiple', t => {
 test('task tags with spaces inside parentheses', t => {
   result = parse('- Task name @one(a and b) @two @three()')
   t.deepEqual(result.children[0].tags, ['one(a and b)', 'two', 'three()'])
+  t.end()
+})
+
+test('task tags with spaces and other characters inside parentheses', t => {
+  result = parse('- Task name @one(2022-01-13 14:55) @two @three()')
+  t.deepEqual(result.children[0].tags, ['one(2022-01-13 14:55)', 'two', 'three()'])
   t.end()
 })
 
@@ -60,6 +78,12 @@ test('notes, multiline', t => {
 test('notes, multiple newlines', t => {
   result = parse('Hello world\n\n:)')
   t.deepEqual(result.children[0].value, 'Hello world\n\n:)\n')
+  t.end()
+})
+
+test('notes, multiline using CRLF character', t => {
+  result = parse('Hello world\r\n:)')
+  t.deepEqual(result.children[0].value, 'Hello world\n:)\n')
   t.end()
 })
 
@@ -89,34 +113,53 @@ test('task tree', t => {
   t.end()
 })
 
+test('task tree with CRLF characters', t => {
+  result = parse('Project:\r\n  - task 1')
+  t.deepEqual(result.children[0].type, 'project')
+  t.deepEqual(result.children[0].depth, 1)
+  t.deepEqual(result.children[0].children[0].type, 'task')
+  t.deepEqual(result.children[0].children[0].depth, 2)
+  t.end()
+})
+
 test('fully-loaded', t => {
   result = parse('Project:\n  yo: @true\n  - ma @done @50%\n    thats right\n\n    :)')
 
-  expected = { type: 'document',
+  expected = {
+    type: 'document',
     depth: 0,
     children:
-     [ { type: 'project',
-         value: 'Project',
-         tags: [],
-         depth: 1,
-         index: { offset: 0, line: 1, column: 1 },
-         children:
-          [ { type: 'project',
-              value: 'yo',
-              tags: [ 'true' ],
-              depth: 2,
-              index: { offset: 11, line: 2, column: 3 },
-              children: [] },
-            { type: 'task',
-              value: 'ma',
-              tags: [ 'done', '50%' ],
-              depth: 2,
-              index: { offset: 23, line: 3, column: 3 },
-              children:
-               [ { type: 'note',
-                   value: 'thats right\n\n:)\n',
-                  depth: 3,
-                   index: { offset: 43, line: 4, column: 5 } } ] } ] } ] }
+      [{
+        type: 'project',
+        value: 'Project',
+        tags: [],
+        depth: 1,
+        index: { offset: 0, line: 1, column: 1 },
+        children:
+          [{
+            type: 'project',
+            value: 'yo',
+            tags: ['true'],
+            depth: 2,
+            index: { offset: 11, line: 2, column: 3 },
+            children: []
+          },
+          {
+            type: 'task',
+            value: 'ma',
+            tags: ['done', '50%'],
+            depth: 2,
+            index: { offset: 23, line: 3, column: 3 },
+            children:
+              [{
+                type: 'note',
+                value: 'thats right\n\n:)\n',
+                depth: 3,
+                index: { offset: 43, line: 4, column: 5 }
+              }]
+          }]
+      }]
+  }
 
   t.deepEqual(result, expected)
   t.end()
