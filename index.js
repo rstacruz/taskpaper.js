@@ -20,7 +20,7 @@ const TAG = P.regex(/@([^\(\s]+(\([^\)]*\))?)/, 1)
  * A string without @tags
  */
 
-const NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n][^\s\n]*)*/)
+const NON_TAG_STRING = P.regex(/(?:[^@\n][^\s\n]*)(?:[ \t]+[^@\n ][^\s\n]*)*/)
 
 const TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(([_, tag]) => tag).many()
 /*
@@ -28,9 +28,9 @@ const TAGS = P.seq(P.regexp(/[\t ]+/), TAG).map(([_, tag]) => tag).many()
  */
 
 const PROJECT = P.seq(
-    P.index,
-    P.regex(/([^\n]+?):/, 1),
-    TAGS)
+  P.index,
+  P.regex(/([^\n]+?):/, 1),
+  TAGS)
   .skip(NEWLINE)
   .map(([index, value, tags]) => {
     return { type: 'project', value, tags, index }
@@ -48,8 +48,8 @@ const TASK = P.seq(
   NON_TAG_STRING,
   TAGS
 ).skip(NEWLINE)
-.map(([index, _, value, tags]) => ({ type: 'task', value, tags, index }))
-.desc('Task definition')
+  .map(([index, _, value, tags]) => ({ type: 'task', value, tags, index }))
+  .desc('Task definition')
 
 /*
  * Note definition
@@ -59,21 +59,21 @@ const NOTE = P.seq(
   P.index,
   P.regex(/[^-\n]([^\n]*[^:\n])?\n*/)
 ).map(([index, value]) => ({ type: 'note', value, index }))
-.desc('Note definition')
+  .desc('Note definition')
 
 /*
  * A block
  */
 
-function block (depth = 1, prefix = '') {
+function block(depth = 1, prefix = '') {
   return parentBlock(depth, prefix).or(leafBlock(depth, prefix))
 }
 
-function leafBlock (depth = 1, prefix = '') {
+function leafBlock(depth = 1, prefix = '') {
   return P.seq(
-      P.string(prefix),
-      depth === 1 ? P.string('') : INDENT,
-      NOTE)
+    P.string(prefix),
+    depth === 1 ? P.string('') : INDENT,
+    NOTE)
     // Consolidate into one note node
     .map(([_pre, _ind, value]) => value)
     .atLeast(1)
@@ -85,19 +85,19 @@ function leafBlock (depth = 1, prefix = '') {
     }))
 }
 
-function parentBlock (depth = 1, prefix = '') {
+function parentBlock(depth = 1, prefix = '') {
   return P.seq(
     P.string(prefix),
     depth === 1 ? P.string('') : INDENT,
     PROJECT.or(TASK)
   ).chain(([prefix, indent, item]) => {
     return block(depth + 1, prefix + indent).many()
-    .map(children => {
-      let out = item
-      out.depth = depth
-      out.children = children
-      return out
-    })
+      .map(children => {
+        let out = item
+        out.depth = depth
+        out.children = children
+        return out
+      })
   })
 }
 
@@ -107,7 +107,12 @@ const parser = block().many()
  * Let's parse something
  */
 
-function parse (str) {
+function parse(str) {
+  // KLUDGE: remove leading newlines and replace \r\n with \n; 
+  // TODO: rewrite this in a more Parsimmony way
+  str = str.replace(/\r\n/gm, '\n');
+  str = str.replace(/(?:^\s*\n)+/, '');
+
   const out = parser.parse(str)
   if (out.status) {
     return { type: 'document', depth: 0, children: out.value }
